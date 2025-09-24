@@ -11,6 +11,7 @@ def Check_Dataframe():
    complete_df.info()
    print("\nDescribe\n", complete_df.describe(include='all'))
    print("\nIsNull\n", complete_df[complete_df.isnull().any(axis = 1)])
+   print("\nColumns\n", complete_df.columns)
    print("#################################")
 
 observations_df = pd.read_csv("observations.csv")
@@ -24,9 +25,9 @@ pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.width', None)        # Prevent line wrapping
 pd.set_option('display.max_colwidth', None) # Show full content of each column (if needed)
 Check_Dataframe()
-print(complete_df['conservation_status'].unique())
-print(complete_df['category'].unique())
-print(complete_df['park_name'].unique())
+print(f"\nUnique conservation status types\n{complete_df['conservation_status'].unique()}")
+print(f"\nUnique category types\n{complete_df['category'].unique()}")
+print(f"\nUnique Parks\n{complete_df['park_name'].unique()}")
 
 # Cleaning Columns
 
@@ -47,3 +48,9 @@ plt.clf()
 sns.countplot(x='park_name', hue='category', data=complete_df)
 plt.show()
 plt.clf()
+
+#['Vascular Plant' 'Mammal' 'Bird' 'Nonvascular Plant' 'Amphibian' 'Reptile' 'Fish']
+for category in complete_df.category.unique():
+   selective_df = complete_df[complete_df.category == category]
+   print(f"\nInformation on {category} species\n{selective_df.nunique()}")
+   
