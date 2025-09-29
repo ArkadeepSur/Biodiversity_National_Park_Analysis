@@ -33,24 +33,45 @@ print(f"\nUnique Parks\n{complete_df['park_name'].unique()}")
 
 # Analysis
 # 1. What is the distribution of conservation_status for animals?
-sns.countplot(x= 'conservation_status', data = complete_df)
+sns.countplot(x= 'conservation_status', data = complete_df, palette="muted")
+plt.title("Distribution of Conservation Status")
+plt.xticks()
+plt.ylabel("Number of Species")
+plt.xlabel("Conservation Status")
 plt.show()
 plt.clf()
 
 # 2. Are certain types of species more likely to be endangered?
 sns.countplot(x='category', hue='conservation_status', data=complete_df)
+plt.title("Category vs Conservation Status")
+plt.xticks()
+plt.ylabel("Number of Species")
+plt.xlabel("Category")
+plt.legend(title="Conservation Status")
 plt.show()
 plt.clf()
 
 # 3. Are the differences between species and their conservation status significant?
 
 # 4. Which species were spotted the most at each park?
-sns.countplot(x='park_name', hue='category', data=complete_df)
+sns.barplot(x='park_name', y="observations", hue='category', data=complete_df)
+plt.title("Total Observations per Park by Category")
+plt.ylabel("Observations")
+plt.xlabel("Park")
 plt.show()
 plt.clf()
 
 #['Vascular Plant' 'Mammal' 'Bird' 'Nonvascular Plant' 'Amphibian' 'Reptile' 'Fish']
 for category in complete_df.category.unique():
-   selective_df = complete_df[complete_df.category == category]
-   print(f"\nInformation on {category} species\n{selective_df.nunique()}")
-   
+   category_df = complete_df[complete_df.category == category]
+   print(f"\nInformation on {category} species\n{category_df.nunique()}")
+
+
+
+#['Great Smoky Mountains National Park' 'Yosemite National Park' 
+# 'Bryce National Park' 'Yellowstone National Park']
+for park in complete_df.park_name.unique():
+   park_df = complete_df[complete_df.park_name == park]
+   print(f"\nInformation on {park} \n{park_df.groupby("category")["observations"].sum()}")
+   sns.barplot(data=park_df, x="category", y="observations", hue="category", palette="tab20")
+   plt.show()
